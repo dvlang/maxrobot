@@ -377,16 +377,16 @@ void driveArdumoto(motionstate waytogo)
   if (waytogo == FORWARD)
   {
     Serial.println("FORWARD");
-    digitalWrite(LEFTDIR, FWD);
-    digitalWrite(RIGHTDIR, REV);
+    digitalWrite(LEFTDIR, REV);
+    digitalWrite(RIGHTDIR, FWD);
     analogWrite(LEFTPWM, SPD);
     analogWrite(RIGHTPWM, SPD);
   }
   else if (waytogo == BACKWARD)
   {
     Serial.println("BACKWARD");
-    digitalWrite(LEFTDIR, REV);
-    digitalWrite(RIGHTDIR, FWD);
+    digitalWrite(LEFTDIR, FWD);
+    digitalWrite(RIGHTDIR, REV);
     analogWrite(LEFTPWM, SPD);
     analogWrite(RIGHTPWM, SPD);
   }  
