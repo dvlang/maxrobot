@@ -374,7 +374,7 @@ byte readNesController()
 // driveArdumoto drives 'motor' in 'dir' direction at 'spd' speed
 void driveArdumoto(motionstate waytogo)
 {
-  if (waytogo == BACKWARD)
+  if (waytogo == FORWARD)
   {
     Serial.println("FORWARD");
     digitalWrite(LEFTDIR, FWD);
@@ -382,7 +382,7 @@ void driveArdumoto(motionstate waytogo)
     analogWrite(LEFTPWM, SPD);
     analogWrite(RIGHTPWM, SPD);
   }
-  else if (waytogo == FORWARD)
+  else if (waytogo == BACKWARD)
   {
     Serial.println("BACKWARD");
     digitalWrite(LEFTDIR, REV);
