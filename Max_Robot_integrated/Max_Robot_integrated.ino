@@ -133,6 +133,15 @@ Servo servo2;
 long num1,num2;  
 long grippos,armpos;  
 
+
+// We'll use SoftwareSerial to communicate with the XBee:
+#include <SoftwareSerial.h>
+
+//For Atmega328P's
+// XBee's DOUT (TX) is connected to pin 2 (Arduino's Software RX)
+// XBee's DIN (RX) is connected to pin 3 (Arduino's Software TX)
+SoftwareSerial XBee(2, 3); // RX, TX
+
 //===============================================================================
 //  Constants
 //===============================================================================
@@ -174,6 +183,7 @@ void setup()
 {
   // Initialize serial port speed for the serial terminal
   Serial.begin(9600);
+    XBee.begin(9600);
   
   // Set appropriate pins to inputs
   pinMode(nesData, INPUT);
@@ -504,8 +514,10 @@ void initArm(void)
 }
 
 void handleSerial() {
- while (Serial.available() > 0) {
-   char incomingCharacter = Serial.read();
+ //while (Serial.available() > 0) {
+   while (XBee.available() > 0) {
+   //char incomingCharacter = Serial.read();
+   char incomingCharacter = XBee.read();
  //  int pwmValue,pwmMax;
    switch (incomingCharacter) {
      case 'f':
