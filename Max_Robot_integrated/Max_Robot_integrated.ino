@@ -155,6 +155,8 @@ byte nesRegister  = 0;    // We will use this to hold current button states
 
 bool apressed=false;
 
+int pwmValue,pwmMax;
+
 //===============================================================================
 //  Pin Declarations
 //===============================================================================
@@ -214,7 +216,7 @@ void loop()
   // or LOW (pushed). What is nice about this test code is that we mapped all
   // of the bits to the actual button name so no useless memorizing!
 
-    
+  /*  
   if (bitRead(nesRegister, A_BUTTON) == 0){
         //Serial.println("ARM AND GRIP ENABLE");
           apressed = true;
@@ -238,14 +240,11 @@ void loop()
   if (bitRead(nesRegister, SELECT_BUTTON) == 0){
         Serial.println("BEEP BEEP");
   }
+*/
+ handleSerial();
 
-/*
- if(bitRead(nesRegister,A_BUTTON==0)){
-  apressed = true;
- }
- else{
-  apressed=false;
- }*/
+
+
     driveArdumoto(STOP); 
   //move forward if B button isn't pressed  
   if (bitRead(nesRegister, UP_BUTTON) == 0){
@@ -502,4 +501,87 @@ void initArm(void)
     servo1.attach(9); //arm
     armpos=9;
     servo1.write(armpos);
+}
+
+void handleSerial() {
+ while (Serial.available() > 0) {
+   char incomingCharacter = Serial.read();
+ //  int pwmValue,pwmMax;
+   switch (incomingCharacter) {
+     case 'f':
+      pwmValue = pwmValue + 5;
+      Serial.println("commanded to move forwards"); 
+      driveArdumoto(FORWARD); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+ 
+     case 'b':
+      pwmValue = pwmValue - 5;
+      driveArdumoto(BACKWARD);
+      Serial.println("commanded to move backwards"); 
+      if (pwmValue <= 0)
+         pwmValue = 0;
+      break;
+
+      case 'r':
+      pwmValue = pwmValue + 5;
+      driveArdumoto(RIGHT);
+      Serial.println("commanded to move right"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+       case 'l':
+      pwmValue = pwmValue + 5;
+       driveArdumoto(LEFT);
+      Serial.println("commanded to move left"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+      case 'o':
+      pwmValue = pwmValue + 5;
+      adjustGripper(OPEN);
+      Serial.println("commanded to move open"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+       case 'c':
+      pwmValue = pwmValue + 5;
+      adjustGripper(CLOSE);
+      Serial.println("commanded to move close"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+       case 'u':
+      pwmValue = pwmValue + 5;
+      adjustArm(UP);
+      Serial.println("commanded to move up"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+       case 'd':
+      pwmValue = pwmValue + 5;
+      adjustArm(DOWN);
+      Serial.println("commanded to move down"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+       case 's':
+      pwmValue = pwmValue + 5;
+      driveArdumoto(STOP);
+      Serial.println("commanded to move stop"); 
+      if(pwmValue >= pwmMax)
+         pwmValue = pwmMax;
+      break;
+
+
+      
+    }
+ }
 }
