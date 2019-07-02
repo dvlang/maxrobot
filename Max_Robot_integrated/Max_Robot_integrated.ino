@@ -53,7 +53,8 @@ enum armmotion{
 #define DLY 10000
 
 //Set an overall speed governor
-#define SPD 127
+//127 is half
+#define SPD 255
 
 // Motor definitions to make life easier:
 //#define MOTOR_A 0
